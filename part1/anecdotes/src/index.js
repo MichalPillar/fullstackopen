@@ -15,8 +15,13 @@ const App = (props) => {
     updateVotes(newVotes);
   }
 
+  const showMostVoted = () => {
+    return props.anecdotes[votes.indexOf(Math.max(...votes))].toString();
+  }
+
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       <div>
         {props.anecdotes[selected]}
       </div>
@@ -25,6 +30,10 @@ const App = (props) => {
       </div>
       <button onClick={increaseVote}>vote</button>
       <button onClick={randomAnecdote}>next anecdote</button>
+      <h2>Anecdote with most votes</h2>
+      <div>
+        {showMostVoted()}
+      </div>
     </div>
   )
 }
