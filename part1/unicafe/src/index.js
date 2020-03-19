@@ -9,14 +9,18 @@ const Button = ({ onClick, text }) => (
 
 const Statistics = ({ good, neutral, bad, all, average, positive }) => (
   // Exercise 1.8 - Statistics already had its own component
-  <div>
-    <div>good {good}</div>
-    <div>neutral {neutral}</div>
-    <div>bad {bad}</div>
-    <div>all {all}</div>
-    <div>average {average}</div>
-    <div>positive {positive ? positive : 0} %</div>
-  </div>
+  all === 0 ? (
+    <div>No feedback given</div>
+  ) : (
+      <div>
+        <div>good {good}</div>
+        <div>neutral {neutral}</div>
+        <div>bad {bad}</div>
+        <div>all {all}</div>
+        <div>average {average}</div>
+        <div>positive {positive ? positive : 0} %</div>
+      </div>
+    )
 )
 
 const App = () => {
