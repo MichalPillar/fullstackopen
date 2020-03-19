@@ -8,6 +8,7 @@ const Button = ({ onClick, text }) => (
 )
 
 const Statistics = ({ good, neutral, bad, all, average, positive }) => (
+  // Exercise 1.8 - Statistics already had its own component
   <div>
     <div>good {good}</div>
     <div>neutral {neutral}</div>
