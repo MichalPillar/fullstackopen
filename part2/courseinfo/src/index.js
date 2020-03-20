@@ -48,7 +48,7 @@ const App = () => {
     }
   ]
 
-
+  // Exercise 2.5 - Course already defined as a separate module
   return (
     <div>
       <Course courses={courses} />
