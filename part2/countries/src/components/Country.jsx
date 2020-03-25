@@ -1,7 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Country = ({ country }) => {
   const [expand, toggleExpand] = useState(false);
+  const [weather, setWeather] = useState({});
+
+  useEffect(() => {
+    axios
+      .get(`http://api.weatherstack.com/current?access_key=${process.env.REACT_APP_WEATHER_KEY}&query=${country.capital}`)
+      .then(response => {
+        const newWeather = response.data.current;
+        setWeather(newWeather);
+      })
+  }, [country.capital])
 
   const handleClick = () => {
     toggleExpand(!expand)
@@ -24,6 +35,16 @@ const Country = ({ country }) => {
         }
       </ul>
       <img src={country.flag} alt={country.name} width="120" />
+      <h3>Weather in {country.capital}</h3>
+      <div>
+        <strong>temperature: </strong>
+        {weather.temperature} Celsius
+      </div>
+      <img src={weather.weather_icons[0]} alt={weather.weather_descriptions} width="80" />
+      <div>
+        <strong>wind: </strong>
+        {weather.wind_speed} mph direction {weather.wind_dir}
+      </div>
     </div>
   ) : (
       <div>
