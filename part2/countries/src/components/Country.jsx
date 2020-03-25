@@ -6,12 +6,20 @@ const Country = ({ country }) => {
   const [weather, setWeather] = useState({});
 
   useEffect(() => {
+    let isCancelled = false;
+
     axios
       .get(`http://api.weatherstack.com/current?access_key=${process.env.REACT_APP_WEATHER_KEY}&query=${country.capital}`)
       .then(response => {
-        const newWeather = response.data.current;
-        setWeather(newWeather);
+        if (!isCancelled) {
+          const newWeather = response.data.current;
+          setWeather(newWeather);
+        }
       })
+
+    return () => {
+      isCancelled = true;
+    }
   }, [country.capital])
 
   const handleClick = () => {
