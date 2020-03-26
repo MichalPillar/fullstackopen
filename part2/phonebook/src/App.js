@@ -22,7 +22,7 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const nameObject = {
+    const personObject = {
       name: newName,
       number: newNumber
     }
@@ -30,9 +30,13 @@ const App = () => {
     if (isDuplicate(newName)) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      setPersons(persons.concat(nameObject));
-      setNewName('');
-      setNewNumber('');
+      axios
+        .post('http://localhost:3001/persons', personObject)
+        .then(response => {
+          setPersons(persons.concat(response.data));
+          setNewName('');
+          setNewNumber('');
+        })
     }
   }
 
