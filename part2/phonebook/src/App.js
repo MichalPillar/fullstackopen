@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
-import axios from 'axios';
+import personService from './services/personService';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -13,9 +13,9 @@ const App = () => {
   const isDuplicate = (name) => persons.some(person => person.name === name);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => setPersons(response.data))
+    personService
+      .getAll()
+      .then(persons => setPersons(persons))
   }, [])
 
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(searchStr.toLowerCase()));
@@ -30,10 +30,10 @@ const App = () => {
     if (isDuplicate(newName)) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      axios
-        .post('http://localhost:3001/persons', personObject)
-        .then(response => {
-          setPersons(persons.concat(response.data));
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson));
           setNewName('');
           setNewNumber('');
         })
