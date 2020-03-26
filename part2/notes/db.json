@@ -4,7 +4,7 @@
       "id": 1,
       "content": "HTML is easy",
       "date": "2019-05-30T17:30:31.098Z",
-      "important": true
+      "important": false
     },
     {
       "id": 2,
@@ -17,6 +17,18 @@
       "content": "GET and POST are the most important methods of HTTP protocol",
       "date": "2019-05-30T19:20:14.298Z",
       "important": true
+    },
+    {
+      "content": "this is a test note",
+      "date": "2020-03-25T07:34:52.409Z",
+      "important": false,
+      "id": 4
+    },
+    {
+      "content": "Another test note",
+      "date": "2020-03-25T07:38:40.625Z",
+      "important": false,
+      "id": 5
     }
   ]
 }
