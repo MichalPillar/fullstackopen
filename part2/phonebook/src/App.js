@@ -31,7 +31,7 @@ const App = () => {
       alert(`${newName} is already added to phonebook`);
     } else {
       personService
-        .create(personObject)
+        .createPerson(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson));
           setNewName('');
@@ -52,6 +52,14 @@ const App = () => {
     setSearchStr(event.target.value);
   }
 
+  const deletePerson = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      personService
+        .removePerson(id)
+      setPersons(persons.filter(person => person.id !== id));
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -59,7 +67,7 @@ const App = () => {
       <h2>Add a new person</h2>
       <PersonForm newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} handleSubmit={handleSubmit} />
       <h2>Numbers</h2>
-      <Persons filteredPersons={filteredPersons} />
+      <Persons filteredPersons={filteredPersons} handleDelete={deletePerson} />
     </div>
   )
 }
