@@ -22,13 +22,25 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    const message = `${newName} is already added to phonebook, replace the old number with a new one?`;
+
     const personObject = {
       name: newName,
       number: newNumber
     }
 
     if (isDuplicate(newName)) {
-      alert(`${newName} is already added to phonebook`);
+      if (window.confirm(message)) {
+        const person = persons.find(p => p.name === newName);
+        personService
+          .updatePerson(person.id, personObject)
+          .then(returnedPerson => {
+            setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson));
+            setNewName('');
+            setNewNumber('');
+          })
+      }
     } else {
       personService
         .createPerson(personObject)
