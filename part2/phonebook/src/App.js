@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
+import Notification from './components/Notification';
+
 import personService from './services/personService';
 
 const App = () => {
@@ -9,6 +12,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchStr, setSearchStr] = useState('');
+  const [message, setMessage] = useState(null);
 
   const isDuplicate = (name) => persons.some(person => person.name === name);
 
@@ -19,6 +23,13 @@ const App = () => {
   }, [])
 
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(searchStr.toLowerCase()));
+
+  const showMessage = (content) => {
+    setMessage(content);
+    setTimeout(() => {
+      setMessage(null);
+    }, 2000);
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -37,6 +48,7 @@ const App = () => {
           .updatePerson(person.id, personObject)
           .then(returnedPerson => {
             setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson));
+            showMessage(`Updated number for ${newName}`);
             setNewName('');
             setNewNumber('');
           })
@@ -46,6 +58,7 @@ const App = () => {
         .createPerson(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson));
+          showMessage(`Added ${newName}`);
           setNewName('');
           setNewNumber('');
         })
@@ -75,6 +88,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter searchStr={searchStr} handleSearch={handleSearch} />
       <h2>Add a new person</h2>
       <PersonForm newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} handleSubmit={handleSubmit} />
