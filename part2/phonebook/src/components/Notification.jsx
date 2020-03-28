@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Notification = ({ message }) => {
+const Notification = ({ message, success }) => {
   const successStyle = {
     background: 'lightgrey',
     color: 'green',
@@ -14,12 +14,18 @@ const Notification = ({ message }) => {
     marginBottom: '10px'
   }
 
+  const errorStyle = {
+    ...successStyle,
+    color: 'red',
+    borderColor: 'red'
+  }
+
   if (message === null) {
     return null
   }
 
   return (
-    <div style={successStyle}>
+    <div style={success ? successStyle : errorStyle}>
       {message}
     </div>
   )

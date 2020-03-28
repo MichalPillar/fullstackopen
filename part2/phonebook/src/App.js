@@ -12,7 +12,10 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchStr, setSearchStr] = useState('');
-  const [message, setMessage] = useState(null);
+  const [notification, setNotification] = useState({
+    message: null,
+    success: true
+  });
 
   const isDuplicate = (name) => persons.some(person => person.name === name);
 
@@ -24,10 +27,19 @@ const App = () => {
 
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(searchStr.toLowerCase()));
 
-  const showMessage = (content) => {
-    setMessage(content);
+  const showNotification = (content, success) => {
+    const newNotification = {
+      message: content,
+      success: success
+    }
+
+    setNotification(newNotification);
     setTimeout(() => {
-      setMessage(null);
+      const emptyNotification = {
+        message: null,
+        success: true
+      }
+      setNotification(emptyNotification);
     }, 2000);
   }
 
@@ -48,9 +60,13 @@ const App = () => {
           .updatePerson(person.id, personObject)
           .then(returnedPerson => {
             setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson));
-            showMessage(`Updated number for ${newName}`);
+            showNotification(`Updated number for ${newName}`, true);
             setNewName('');
             setNewNumber('');
+          })
+          .catch(error => {
+            console.log(error);
+            showNotification(`Information of ${newName} has already been removed from server`, false);
           })
       }
     } else {
@@ -58,7 +74,7 @@ const App = () => {
         .createPerson(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson));
-          showMessage(`Added ${newName}`);
+          showNotification(`Added ${newName}`, true);
           setNewName('');
           setNewNumber('');
         })
@@ -88,7 +104,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={notification.message} success={notification.success} />
       <Filter searchStr={searchStr} handleSearch={handleSearch} />
       <h2>Add a new person</h2>
       <PersonForm newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} handleSubmit={handleSubmit} />
